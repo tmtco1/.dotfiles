@@ -1,0 +1,12 @@
+html#main-window > body {
+    background: transparent !important;
+}
+
+#zen-main-app-wrapper {
+    background: color-mix(in oklab, var(--zen-main-browser-background) 90%) !important;
+}
+
+:root {
+  --in-content-page-background: #00000000 !important;
+  --in-content-box-background: #00000088 !important;
+}
