@@ -1,1 +1,6 @@
-sway waybar rofi-wayland cliphist autotiling kitty
+sway
+waybar
+rofi-wayland
+cliphist
+autotiling
+kitty
