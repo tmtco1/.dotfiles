@@ -1,0 +1,1 @@
+sway waybar rofi-wayland cliphist autotiling kitty

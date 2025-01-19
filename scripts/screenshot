@@ -1,0 +1,43 @@
+#!/bin/bash
+
+select=$(echo -e "Take screenshot with slurp\nTake full screenshot\nTake screenshot of focused window" | rofi -dmenu -theme sidebar)
+
+case "$select" in
+    "Take screenshot with slurp")
+        file=$(mktemp /tmp/screenshot_XXXXXX.png)
+        grim -g "$(slurp)" "$file"
+        ;;
+    "Take full screenshot")
+        file=$(mktemp /tmp/screenshot_XXXXXX.png)
+        grim -t png "$file"
+        ;;
+    "Take screenshot of focused window")
+        file=$(mktemp /tmp/screenshot_XXXXXX.png)
+        grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.focused? == true).rect | "\(.x),\(.y) \(.width)x\(.height)"')" "$file"
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+if [ -f "$file" ]; then
+    action=$(echo -e "Copy image\nSave image" | rofi -dmenu -theme sidebar)
+    case "$action" in
+        "Copy image")
+            wl-copy < "$file"
+            rm "$file"
+            ;;
+        "Save image")
+            save_path=$(zenity --file-selection --save --confirm-overwrite --file-filter="*.png" --title="Save Screenshot")
+            if [ -n "$save_path" ]; then
+                mv "$file" "$save_path"
+            else
+                rm "$file"
+            fi
+            ;;
+        *)
+            rm "$file"
+            ;;
+    esac
+fi
+
